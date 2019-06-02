@@ -15,8 +15,6 @@ WSS.on('connection', (ws) => {
             })
             console.log(message)
         }
-
-        
     })
 })
 
