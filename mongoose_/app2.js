@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const User = require('./models/User')
+const User = require('./models/UserSchema')
 
 mongoose.connect('mongodb://localhost:27017/mongoose', {useNewUrlParser: true})
 mongoose.connection
@@ -8,8 +8,9 @@ mongoose.connection
         console.log(`could not connect`, err)
     })
 
+
 const newUser = new User({
-    firstName: 'AAAA',
+    firstName: 'Yueleng',
     lastName: 'Wang',
     isActive: 1
 })
