@@ -21,6 +21,7 @@ app.post('/register', (req, res) => {
 
     // encrypt the password
     bcrypt.genSalt(10, (err, salt) => {
+        console.log('salt = ', salt)
         bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) return err
             newUser.password = hash
