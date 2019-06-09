@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}))
  * rather than findAndModify().
  */
 mongoose.set('useFindAndModify', false)
-// mongoose.set('usrNewUrlPaser', true)
+// mongoose.set('useNewUrlParser', true)
 mongoose.connect('mongodb://localhost:27017/mongoose', {useNewUrlParser: true})
 mongoose.connection
     .once('open', () => console.log('CONNECTED'))
