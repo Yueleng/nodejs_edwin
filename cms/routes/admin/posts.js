@@ -5,12 +5,12 @@ const Post = require('../../models/Post');
 const {isEmpty, uploadDir} = require('../../helpers/upload-helpers')
 const fs = require('fs')
 const path = require('path')
-const moment = require('moment')
+
 
 
 // .render() automatically look under /views folder.
 // Override the layout in admin route
-// render() will now render into {{{body}}} views/layouts/admin.handlebars
+// render() will now render {{{body}}} of views/layouts/admin.handlebars
 router.all('/*', (req, res, next) => {
     req.app.locals.layout = 'admin'
     next()

@@ -4,7 +4,7 @@ const faker = require('faker')
 
 // .render() automatically look under /views folder.
 // Override the layout in admin route
-// render() will now render into {{{admin}}} views/layouts/admin.handlebars
+// render() will now render into {{{body}}} of views/layouts/admin.handlebars
 router.all('/*', (req, res, next) => {
     req.app.locals.layout = 'admin'
     next()

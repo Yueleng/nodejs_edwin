@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')))
 
 // helper function
-const {select} = require('./helpers/handlebars-helpers');
+const {select, generateDate} = require('./helpers/handlebars-helpers');
 
 // Method Override
 app.use(methodOverride('_method'))
@@ -43,7 +43,8 @@ app.use(methodOverride('_method'))
 // Set View Engine
 // views/layouts/home.handlebars
 // if exphbs() without parameter, then app will search for views/layouts/main.handlebars
-app.engine('handlebars', exphbs({defaultLayout: 'home', helpers: {select: select}}))
+// as defaultLayout
+app.engine('handlebars', exphbs({defaultLayout: 'home', helpers: {select: select, generateDate: generateDate}}))
 app.set('view engine', 'handlebars')
 
 // Handle upload
@@ -57,10 +58,12 @@ app.use(bodyParser.json())
 const home = require('./routes/home/index')
 const admin = require('./routes/admin/index')
 const posts = require('./routes/admin/posts')
+const categories = require('./routes/admin/categories')
+
 app.use('/', home)
 app.use('/admin', admin)
 app.use('/admin/posts', posts)
-
+app.use('/admin/categories', categories)
 
 app.listen(3000, () => {
     console.log(`Server is listening on PORT: 3000`)
