@@ -30,17 +30,11 @@
     <div class="form-group">
         <label for="status">Category</label>
         <select name="category" id="status" class="form-control">
-
-
             {{#each categories}}
-
-            <option value="{{id}}">{{name}}</option>
-
+                <option value="{{id}}">{{name}}</option>
             {{/each}}
-
         </select>
     </div>
-
 
     <div class="form-group">
         <label for="status">Status</label>
@@ -50,8 +44,6 @@
             <option value="draft">Draft</option>
         </select>
     </div>
-
-
 
     <div class="form-check">
         <label for="allowComments" class="form-check-label">
@@ -65,8 +57,6 @@
         <textarea required  name="body" cols="30" rows="10" class="form-control" id="body" placeholder="Enter Description"></textarea>
     </div>
 
-
     <button type="submit" class="btn btn-primary">Create Post</button>
-
 
 </form>

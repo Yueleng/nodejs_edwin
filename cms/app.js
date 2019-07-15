@@ -8,9 +8,10 @@ const methodOverride = require('method-override')
 const upload = require('express-fileupload')
 const session = require('express-session')
 const flash = require('connect-flash')
+const {mongoDbUrl} = require('./config/database')
+const passport = require('passport')
 
-
-mongoose.connect('mongodb://localhost:27017/cms', {useNewUrlParser: true})
+mongoose.connect(mongoDbUrl, {useNewUrlParser: true})
         .then((db) => {
             console.log('MONGO connected')
         }).catch((error) => {console.log(error)})
@@ -26,8 +27,16 @@ app.use(session({
 
 app.use(flash())
 
+// PASSPORT
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use((req, res, next) => {
+    res.locals.user = req.user || null
     res.locals.success_message = req.flash('success_message')
+    res.locals.error_message = req.flash('error_message')
+    res.locals.form_errors = req.flash('form_errors')
+    res.locals.error = req.flash('error')
     next()
 })
 
