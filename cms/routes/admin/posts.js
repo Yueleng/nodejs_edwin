@@ -6,7 +6,7 @@ const Category = require('../../models/Category')
 const {isEmpty, uploadDir} = require('../../helpers/upload-helpers')
 const fs = require('fs')
 const path = require('path')
-
+const {userAuthenticated} = require('../../helpers/authentication')
 
 
 // .render() automatically look under /views folder.
@@ -72,6 +72,7 @@ router.post('/create', (req, res) => {
         }
 
         const newPost = new Post({
+            user: req.user.id,
             title: req.body.title,
             status: req.body.status,
             allowComments: allowComments,
@@ -91,7 +92,6 @@ router.post('/create', (req, res) => {
 
     
 })
-
 
 router.get('/edit/:id', (req, res) => {
     
@@ -113,6 +113,7 @@ router.put('/edit/:id', (req, res) => {
                 allowComments = false
             }
 
+            post.user = req.user.id
             post.title = req.body.title
             post.status = req.body.status
             post.allowComments = allowComments
@@ -132,25 +133,41 @@ router.put('/edit/:id', (req, res) => {
 
             post.save().then(updatePost => {
                 req.flash('success_message', 'Post was successfully updated')
-                res.redirect('/admin/posts')
+                res.redirect('/admin/posts/my-posts')
             })
 
             
         })
 })
-
 
 router.delete('/:id', (req, res) => {
-    Post.deleteOne({_id: req.params.id})
+    Post.findOne({_id: req.params.id})
+        .populate('comments')  // ?? seems not needed.
         .then((post) => {
             fs.unlink(uploadDir + post.file, (err) => {
-                req.flash('success_message', 'Post was successfully deleted')
-                res.redirect('/admin/posts')
+                console.log(post.commetns)
+                if (post.comments.length >= 1) {
+                    post.comments.forEach(comment => {
+                        comment.remove()
+                    })
+                }
+                post.remove().then(postRemoved => {
+                    req.flash('success_message', 'Post was successfully deleted')
+                    res.redirect('/admin/posts/my-posts')
+                })
+                
             })
             
         })
 })
 
+router.get('/my-posts', (req, res) => {
+    Post.find({user: req.user.id})
+        .populate('category')
+        .then((posts) => {
+            res.render('admin/posts/my-posts', {posts: posts})
+        })
+})
 // router.delete('/:id', (req, res) => {
 //     Post.findOne({_id: req.params.id})
 //         .then((post) => {

@@ -139,11 +139,15 @@ router.post('/register', (req, res) => {
 
 router.get('/post/:id', (req, res) => {
     Post.findOne({_id: req.params.id})
-        .then((post) => {
-            Category.find({}).then((categories) => {
-                res.render('home/post', {post: post, categories: categories})
-            })
+    // populate comments in order to show comments in post.handlebars
+    // populate in populate. Since stucture is like: Post -> comments -> users
+    .populate('user')
+    .populate({path: 'comments', populate: {path: 'user'}})
+    .then((post) => {
+        Category.find({}).then((categories) => {
+            res.render('home/post', {post: post, categories: categories})
         })
+    })
 })
 
 module.exports = router

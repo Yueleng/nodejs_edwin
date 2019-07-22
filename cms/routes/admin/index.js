@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const Post = require('../../models/Post')
 const faker = require('faker')
+const {userAuthenticated} = require('../../helpers/authentication')
 
 // .render() automatically look under /views folder.
 // Override the layout in admin route

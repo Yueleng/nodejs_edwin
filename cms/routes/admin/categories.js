@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Category = require('../../models/Category')
-
+const {userAuthenticated} = require('../../helpers/authentication')
 // .render() automatically look under /views folder.
 // Override the layout in admin route
 // render() will now render into {{{body}}} of views/layouts/admin.handlebars

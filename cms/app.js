@@ -11,7 +11,7 @@ const flash = require('connect-flash')
 const {mongoDbUrl} = require('./config/database')
 const passport = require('passport')
 
-mongoose.connect(mongoDbUrl, {useNewUrlParser: true})
+mongoose.connect(mongoDbUrl, {useNewUrlParser: true, useFindAndModify: false})
         .then((db) => {
             console.log('MONGO connected')
         }).catch((error) => {console.log(error)})
@@ -68,11 +68,13 @@ const home = require('./routes/home/index')
 const admin = require('./routes/admin/index')
 const posts = require('./routes/admin/posts')
 const categories = require('./routes/admin/categories')
+const comments = require('./routes/admin/comments')
 
 app.use('/', home)
 app.use('/admin', admin)
 app.use('/admin/posts', posts)
 app.use('/admin/categories', categories)
+app.use('/admin/comments', comments)
 
 app.listen(3000, () => {
     console.log(`Server is listening on PORT: 3000`)
