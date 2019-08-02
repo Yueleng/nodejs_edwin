@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const URLSlugs = require('mongoose-url-slugs')
 const Schema = mongoose.Schema
 
 const PostSchema = new Schema({
@@ -20,6 +21,10 @@ const PostSchema = new Schema({
     status: {
         type: String,
         default: 'public'
+    },
+
+    slug: {
+        type: String
     },
 
     allowComments: {
@@ -46,5 +51,7 @@ const PostSchema = new Schema({
         ref: 'comments'
     }]
 }, {usePushEach: true}) // seems this is not necessary right now.
+
+PostSchema.plugin(URLSlugs('title', {field: 'slug'}));
 
 module.exports = mongoose.model('posts', PostSchema)

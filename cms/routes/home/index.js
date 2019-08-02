@@ -17,12 +17,28 @@ router.all('/*', (req, res, next) => {
 })
 
 router.get('/', (req, res) => {
+    const perPage = 10;
+    const page = req.query.page || 1;
+
     // render file views/home/index.handlebars
     // rendered into {{{body}}} of views/layouts/home.handlebars
-    Post.find({}).then((posts) => {
-        Category.find({}).then((categories) => {
-            res.render('home/index', {posts: posts, categories: categories})
+    Post
+    .find({})
+    .skip(perPage * (page - 1))
+    .limit(perPage)
+    .then((posts) => {
+        Post.countDocuments().then((postCount) => {
+            Category.find({}).then((categories) => {
+                res.render('home/index', 
+                            {
+                                posts: posts,
+                                categories: categories,
+                                current: parseInt(page),
+                                pages: Math.ceil(postCount / perPage)
+                            })
+            })
         })
+        
     })
 })
 
@@ -137,12 +153,12 @@ router.post('/register', (req, res) => {
 
 })
 
-router.get('/post/:id', (req, res) => {
-    Post.findOne({_id: req.params.id})
+router.get('/post/:slug', (req, res) => {
+    Post.findOne({slug: req.params.slug})
     // populate comments in order to show comments in post.handlebars
     // populate in populate. Since stucture is like: Post -> comments -> users
     .populate('user')
-    .populate({path: 'comments', populate: {path: 'user'}})
+    .populate({path: 'comments', match:{approveComment: true}, populate: {path: 'user'}})
     .then((post) => {
         Category.find({}).then((categories) => {
             res.render('home/post', {post: post, categories: categories})

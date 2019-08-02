@@ -11,7 +11,6 @@ router.get('/', (req, res) => {
     Comment.find({user: req.user.id}).populate('user').then(comments => {
         res.render('admin/comments', {comments: comments}) // will render admin/comments/index.handlebars by default
     })
-    
 })
 
 router.post('/', (req, res) => {
@@ -24,6 +23,7 @@ router.post('/', (req, res) => {
         post.comments.push(newComment)
         post.save().then(savedPost => {
             newComment.save().then(savedComment => {
+                req.flash('success_message', 'Message was added successfully, and it is under review')
                 res.redirect(`/post/${post.id}`);
             })
         })
@@ -43,7 +43,10 @@ router.delete('/:id', (req, res) => {
 })
 
 router.post('/approve-comment', (req, res) => {
-    res.send('IT WORKS')
+    Comment.findOneAndUpdate({_id: req.body.id}, {$set: {approveComment: req.body.approveComment}}, (err, result) => {
+        if (err) return err
+        res.send(result)
+    })
 })
 
 module.exports = router

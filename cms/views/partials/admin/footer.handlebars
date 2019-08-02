@@ -98,33 +98,19 @@
 
 
         $("[name='approveComment']").on('switchChange.bootstrapSwitch', function(e, data){
-
+            console.log($(this).attr('data-id'));
             const id = $(this).attr('data-id');
 
             $.ajax({
-
                 type: "POST",
                 url: '/admin/comments/approve-comment',
                 data: {id: id, approveComment: data},
                 cache: false,
-                success: function(data){
-
-                       toastr.success(`Comment with id ${data._id} was updated`);
-
+                success: function(data) {
+                    toastr.success(`Comment with id ${data._id} was updated`);
                 }
-
-
             });
-
-
-
-
-
         });
-
-
-
-
     });
 
 </script>
