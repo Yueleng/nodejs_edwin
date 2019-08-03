@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')))
 
 // helper function
-const {select, generateDate, paginate} = require('./helpers/handlebars-helpers');
+const {select, generateDate, paginate} = require('./helpers/handlebars-helpers')
 
 // Method Override
 app.use(methodOverride('_method'))
@@ -76,6 +76,8 @@ app.use('/admin/posts', posts)
 app.use('/admin/categories', categories)
 app.use('/admin/comments', comments)
 
-app.listen(3000, () => {
-    console.log(`Server is listening on PORT: 3000`)
+const port = process.env.PORT || 3000
+
+app.listen(port, () => {
+    console.log(`Server is listening on PORT: ${port}`)
 })

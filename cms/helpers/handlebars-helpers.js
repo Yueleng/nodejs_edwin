@@ -10,17 +10,17 @@ module.exports = {
     },
 
     paginate: function(options) {
-        let output = '';
+        let output = ''
         if (options.hash.current === 1) {
-            output += `<li class="page-item disabled"><a class="page-link">First</a></li>`;
+            output += `<li class="page-item disabled"><a class="page-link">First</a></li>`
         } else {
-            output += `<li class="page-item"><a href="?page=1" class="page-link">First</a></li>`;
+            output += `<li class="page-item"><a href="?page=1" class="page-link">First</a></li>`
         }
         // console.log(options)
         let i = options.hash.current > 5 ? options.hash.current - 4: 1
 
         if (i !== 1) {
-            output += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
+            output += `<li class="page-item disabled"><a class="page-link">...</a></li>`
         }
 
         for (; i <= options.hash.current + 4 && i <= options.hash.pages; i++ ) {
